@@ -1,12 +1,13 @@
-# <span style="color:green">Style Bible</span>
+![header](https://capsule-render.vercel.app/api?type=rounded&color=0:81ed89,100:06c007&text=Style%20Bible&height=150&fontSize=80&fontColor=d3ffd8)
+
 <br>
 :sunglasses:곽동호 T5013 :sunglasses:권수훈 T5017 :sunglasses:박상우 T5081
 <br><br>
 :sunglasses:이민호 T5140 :sunglasses:이한정 T5166 :sunglasses:이준원 T5237
-<br>
+<br><br>
 
 # GitHub 협업 규칙
-이 문서는 RecSys 1조 Style Bible의 GitHub 협업 규칙을 담고 있습니다.
+RecSys 1조 Style Bible의 GitHub 협업 규칙입니다.
 <br>
 
 ## 1. 커밋 컨벤션
@@ -69,10 +70,10 @@
 ISSUE / PR은 다음의 규칙을 지킨다.
 - ISSUE 기반으로 커밋을 트래킹한다.
 - PR은 최소 3명 이상의 확인을 받고 승인해야 한다.
-- ISSUE / PR은 템플릿을 만들어서 사용하고 아래의 규칙에 따라 제목을 설정해야 한다.
+- ISSUE / PR은 템플릿을 만들어서 사용하고 제목 앞에 [태그]를 붙여서 작성해야 한다.
 <br>
 
-### 제목
+### ISSUE/PR 제목 태그
 
  - [Feat] 새로운 기능 추가
  - [Fix] 버그 수정
@@ -111,17 +112,26 @@ ISSUE / PR은 다음의 규칙을 지킨다.
 
 - README.md
 
-    README 파일은 프로젝트의 개요를 제공합니다.<br>
+    README 파일은 프로젝트의 개요를 제공합니다.
+    <br>
     목적, 설치 지침, 사용 가이드라인 및 기타 관련 정보가 포함됩니다.
+<br>
 
 - data
 
-    csv 파일이나 데이터를 저장하여 사용하는 폴더입니다.<br>
+    csv 파일이나 데이터를 저장하여 사용하는 폴더입니다.
+    <br>
     파일은 빈 폴더로 존재해야 하며 데이터 위치를 지정해서 사용하기 위해 빈 폴더를 생성하였습니다.
+<br>
 
 - notebooks
 
-    EDA, 데이터 전처리, 시각화와 관련된 주피터 노트북을 저장하는 곳입니다.
+    EDA, 시각화, 데이터 전처리 등 공유하고자 하는 주피터 노트북을 저장하는 곳입니다.
+    <br>
+    양식은 제목-사용자명.ipynb으로 한다.
+    <br>
+    >예시: EDA-junwon.ipynb
+<br>
 
 - src
 
@@ -130,8 +140,14 @@ ISSUE / PR은 다음의 규칙을 지킨다.
 
 ### 파이토치 템플릿
 파이토치 템플릿은 아래 링크를 참고하여 작성한다.
+<br>
+
 - 참조 링크
-[기본 템플릿](https://github.com/victoresque/pytorch-template)
-[간단한 버전](https://smha-61749.medium.com/pytorch-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EB%94%A5%EB%9F%AC%EB%8B%9D-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EA%B3%84%ED%95%98%EA%B3%A0-%ED%85%9C%ED%94%8C%EB%A6%BF-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0-ccf222552e63)
+<br>
+
+>[기본 템플릿](https://github.com/victoresque/pytorch-template)
+<br>
+
+>[간단한 버전](https://smha-61749.medium.com/pytorch-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EB%94%A5%EB%9F%AC%EB%8B%9D-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EA%B3%84%ED%95%98%EA%B3%A0-%ED%85%9C%ED%94%8C%EB%A6%BF-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0-ccf222552e63)
 
 <br>
