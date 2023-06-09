@@ -10,6 +10,13 @@
 RecSys 1조 Style Bible의 GitHub 협업 규칙입니다.
 <br>
 
+## 0. pre-commit 설치 방법
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
 ## 1. 커밋 컨벤션
 커밋 메시지 구조는 header, body, footer 세 가지 파트로 나누고, 각 파트는 빈 줄을 두어 구분한다.
 <br>
