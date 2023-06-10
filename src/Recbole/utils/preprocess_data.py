@@ -21,6 +21,8 @@ def make_yaml(model_name):
     load_col:
         inter: [user_id, item_id, timestamp]
     """
+    outpath = f"yaml"
     
-    with open(f"{model_name}.yaml","w") as f:
+    os.makedirs(outpath, exist_ok=True)
+    with open(os.path.join(outpath,f"{model_name}.yaml"),"w") as f:
         f.write(yaml_data)
