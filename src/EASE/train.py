@@ -26,7 +26,7 @@ def main():
     model_name = "EASE"
     date_time = korea_date_time()
     
-    wandb_args = {'_lambda': config['_lambda']}
+    wandb_args = {'_lambda': config['_lambda'], 'scale': config['scale']}
 
     wandb.init(
     project=project_name,
@@ -50,24 +50,19 @@ def main():
     # train_data.to_csv(os.path.join(folder_path, 'train_data.csv'), index=False)
     # valid_data.to_csv(os.path.join(folder_path, 'valid_data.csv'), index=False)
     
+    #train with train_data for cv
     print('###############')
     print('Preprocessing..\n')
-    #train with total_df
-    X, _, _ = create_matrix_and_mappings(train_df,config['scale'])
-    #train with train_data
     X_cv, index_to_user, index_to_item = create_matrix_and_mappings(train_data,config['scale'])
 
     print('###############')
     print('Model: EASE\n')
-    model = EASE(_lambda=config['_lambda'])
     model_cv = EASE(_lambda=config['_lambda'])
     
     print('###############')
     print('Training..\n')
-    model.train(X)
     model_cv.train(X_cv)
     
-    #cv test with model_cv, X_cv
     print('###############')
     print('Predicting.. \n')
     result = model_cv.forward(X_cv[:, :])
@@ -91,6 +86,10 @@ def main():
     wandb.log({"Recall@10": recall_10})
     print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n')
     
+    # train with total data
+    X, _, _ = create_matrix_and_mappings(train_df,config['scale'])
+    model = EASE(_lambda=config['_lambda'])
+    model.train(X)
     print('###############')
     print('Saving model..\n')
     save_folder = config['save_model_path']
