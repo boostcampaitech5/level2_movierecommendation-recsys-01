@@ -1,11 +1,13 @@
 import os
 import yaml
+import wandb
 import pickle
 import pandas as pd
 import numpy as np
 from utils.train_valid import train_valid_split
 from utils.preprocess import create_matrix_and_mappings
 from utils.metric import recall_at_10
+from utils.utils import korea_date_time
 from model.ease import EASE
 
 def main():
@@ -16,6 +18,22 @@ def main():
     with open(config_path, 'r') as file:
         config = yaml.safe_load(file)
 
+    # WandB init
+    wandb.login(key="87f939bb2c7ea08b8246da620fcde06361132916")
+   
+    project_name = "MovieRec"
+    user_name = "junwon"
+    model_name = "EASE"
+    date_time = korea_date_time()
+    
+    wandb_args = {'_lambda': config['_lambda']}
+
+    wandb.init(
+    project=project_name,
+    name=f"{user_name}-{model_name}-{date_time}",
+    config=wandb_args
+    )
+    
     print('###############')
     print('Loading data.. \n')
     train_df = pd.read_csv(os.path.join(config['data_path'], 'train_ratings.csv'))
@@ -64,6 +82,7 @@ def main():
     recall_10 = recall_at_10(true_df=valid_data, pred_df= pred_df)
     print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
     print("Recall@10:", recall_10)
+    wandb.log({"Recall@10": recall_10})
     print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n')
     
     print('###############')
@@ -79,4 +98,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
