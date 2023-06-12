@@ -1,0 +1,4 @@
+from utils.preprocess_data import *
+
+if __name__ == '__main__':
+    make_inter()

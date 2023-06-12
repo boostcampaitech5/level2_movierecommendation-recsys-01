@@ -5,6 +5,11 @@ import torch
 
 from recbole.model.general_recommender.bpr import BPR
 from recbole.model.general_recommender.ease import EASE
+from recbole.model.general_recommender.lightgcn import LightGCN
+from recbole.model.general_recommender.multivae import MultiVAE
+from recbole.model.general_recommender.neumf import NeuMF
+
+
 
 from recbole.config import Config
 from recbole.data import create_dataset, data_preparation, Interaction
@@ -17,7 +22,17 @@ from logging import getLogger
 def train(model_name='ease'):
     logger = getLogger()
     
-    config = Config(model=model_name.upper(),dataset='recbole_train',config_file_list=[f"yaml/{model_name}.yaml"])
+    if model_name=='lightgcn':
+        config = Config(model='LightGCN',dataset='recbole_train',config_file_list=[f"yaml/{model_name}.yaml"])
+    
+    elif model_name == 'multivae':
+        config = Config(model='MultiVAE',dataset='recbole_train',config_file_list=[f"yaml/{model_name}.yaml"])
+        
+    elif model_name == 'neumf':
+        config = Config(model='NeuMF',dataset='recbole_train',config_file_list=[f"yaml/{model_name}.yaml"])
+    else:
+        config = Config(model=model_name.upper(),dataset='recbole_train',config_file_list=[f"yaml/{model_name}.yaml"])
+    
     config['show_progress'] = False 
     config['device'] = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
@@ -38,6 +53,12 @@ def train(model_name='ease'):
         model = EASE(config, train_data.dataset).to(config['device'])
     elif model_name == 'bpr':
         model = BPR(config, train_data.dataset).to(config['device'])
+    elif model_name == 'lightgcn':
+        model = LightGCN(config, train_data.dataset).to(config['device'])
+    elif model_name == 'multivae':
+        model = MultiVAE(config, train_data.dataset).to(config['device'])
+    elif model_name == 'neumf':
+        model = NeuMF(config, train_data.dataset).to(config['device'])
     else:
         raise NotImplementedError(f"model {model_name} not implemented")
 
