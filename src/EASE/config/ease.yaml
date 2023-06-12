@@ -1,0 +1,4 @@
+_lambda: 300
+
+save_model_path: "save"
+data_path: '../data/train'
