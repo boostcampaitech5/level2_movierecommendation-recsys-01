@@ -3,7 +3,7 @@ import pandas as pd
 from typing import Tuple
 from scipy.sparse import csr_matrix
 
-def create_matrix_and_mappings(dataframe: pd.DataFrame) -> Tuple[csr_matrix, dict, dict]:
+def create_matrix_and_mappings(dataframe: pd.DataFrame, scale) -> Tuple[csr_matrix, dict, dict]:
     """
     Create a CSR matrix and index mappings for users and items based on the given dataframe.
 
@@ -27,7 +27,7 @@ def create_matrix_and_mappings(dataframe: pd.DataFrame) -> Tuple[csr_matrix, dic
     # Create CSR matrix
     row_indices = dataframe['user'].map(user_index)
     col_indices = dataframe['item'].map(item_index)
-    values = np.ones(len(dataframe))
+    values = np.ones(len(dataframe))*scale
     matrix = csr_matrix((values, (row_indices, col_indices)), shape=(len(users), len(items)))
 
     # Create reverse mappings for user and item indices

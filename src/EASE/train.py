@@ -52,21 +52,27 @@ def main():
     
     print('###############')
     print('Preprocessing..\n')
-    X, index_to_user, index_to_item = create_matrix_and_mappings(train_data)
+    #train with total_df
+    X, _, _ = create_matrix_and_mappings(train_df,config['scale'])
+    #train with train_data
+    X_cv, index_to_user, index_to_item = create_matrix_and_mappings(train_data,config['scale'])
 
     print('###############')
     print('Model: EASE\n')
     model = EASE(_lambda=config['_lambda'])
+    model_cv = EASE(_lambda=config['_lambda'])
     
     print('###############')
     print('Training..\n')
     model.train(X)
+    model_cv.train(X_cv)
     
+    #cv test with model_cv, X_cv
     print('###############')
     print('Predicting.. \n')
-    result = model.forward(X[:, :])
+    result = model_cv.forward(X_cv[:, :])
     #To remove information that has already been evaluated
-    result[X.nonzero()] = -np.inf
+    result[X_cv.nonzero()] = -np.inf
 
     #Extract top 10
     recommend_list=[]

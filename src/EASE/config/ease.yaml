@@ -1,4 +1,4 @@
 _lambda: 300
-
+scale: 1
 save_model_path: "save"
 data_path: '../../data/train'
