@@ -1,4 +1,4 @@
-from trainer.recbole_inference import inference
+from trainer.recbole_inference import inference, test_inference
 import argparse 
 
 if __name__ == '__main__':
@@ -7,4 +7,5 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
-    inference(args.path)
+    # inference(args.path)
+    test_inference(args.path)
