@@ -1,19 +1,3 @@
-## 할 일
-
--   [x] docker python image들의 차이에 대해서 공부하기
--   [ ] multi build 공부하기
--   [ ] ipynb를 py로 변경하기
--   [x] dockerfile 짜기 (with volume)
-    -   [ ] volume flag
-
-## docker와 data
-
-docker container에서 머신러닝 알고리즘을 수행하려고 합니다.
-이 때 큰 용량의 csv가 존재하는데 여기서 질문이 있습니다.
-
-1. data를 volumes로 연결하여 사용하는 것은 좋지 않습니까?
-2. data는 컨테이너 내부에 있는 것이 좋습니까 바깥에 있는 것이 좋습니까? 만약 바깥에 있는 것이 옳은 패턴이라면 데이터 로드는 어떤 방식이 좋습니까?
-
 ## 환경 구성에 대한 참고 자료
 
 -   python 환경에서 alpine 이미지는 왜 권장되지 않는가?

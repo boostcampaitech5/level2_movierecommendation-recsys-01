@@ -4,7 +4,7 @@
 pwd
 
 if [ ! -d "data" ]; then
-    echo "data folder not exists. check volumes"
+    echo "data folder not exists. please volumes options."
 else
     echo "data folder exists."
 fi
