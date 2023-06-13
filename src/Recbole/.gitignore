@@ -3,5 +3,7 @@ log_tensorboard/
 dataset/
 saved/
 yaml/
+context_yaml/
+general_yaml/
 
 !.gitignore
