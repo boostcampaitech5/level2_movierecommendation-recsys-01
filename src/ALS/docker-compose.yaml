@@ -1,0 +1,15 @@
+version: "3"
+services:
+    als:
+        container_name: als
+        platform: linux/amd64
+        working_dir: /app
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - .:/app:consistent # volume flags : consistent, delegated, cached
+        # command: ["pwd"] # override Dockerfile CMD
+        command: ["sh", "ENTRYPOINT.sh"] # override Dockerfile CMD
+        # ports:
+        #     - 8080:8080
