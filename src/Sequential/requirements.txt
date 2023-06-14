@@ -1,0 +1,7 @@
+--extra-index-url https://download.pytorch.org/whl/cu110
+torch==1.7.1+cu110
+
+pandas
+numpy
+tqdm
+typing
