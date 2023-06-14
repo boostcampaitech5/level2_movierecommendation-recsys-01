@@ -1,4 +1,8 @@
 _lambda: 300
-
+scale: 1
+cv : False
 save_model_path: "save"
-data_path: '../data/train'
+data_path: "../../data/train"
+#wandb setting
+wandb_key: "87f939bb2c7ea08b8246da620fcde06361132916"
+user_name: 'junwon'

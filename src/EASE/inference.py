@@ -18,7 +18,7 @@ def main():
         
     train_df = pd.read_csv(os.path.join(config['data_path'], 'train_ratings.csv'))
     
-    X, index_to_user, index_to_item = create_matrix_and_mappings(train_df)
+    X, index_to_user, index_to_item = create_matrix_and_mappings(train_df,config['scale'])
     
     print('###############')
     print('Load saved model.. \n')
