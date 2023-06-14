@@ -9,10 +9,10 @@
     "n_heads": 4,
     "pffn_hidden_dim": 512,
     "dropout_rate": 0.5,
-    "mask_prob": 0.3,
+    "mask_prob": 0.15,
     "batch_size": 128,
     "lr": 0.001,
-    "n_epochs": 2,
+    "n_epochs": 200,
     "max_patience": 20,
     "n_neg_samples": 1000,
     "k": 10
