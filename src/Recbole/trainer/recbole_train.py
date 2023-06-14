@@ -87,7 +87,7 @@ def context_train(model_name='ffm'):
     else:
         raise NotImplementedError(f"model {model_name} not implemented")
     
-    config['epochs'] = 6
+    config['epochs'] = 100
     config['show_progress'] = False
     config['device'] = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     init_seed(config['seed'], config['reproducibility'])
