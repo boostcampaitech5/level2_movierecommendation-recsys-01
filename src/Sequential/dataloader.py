@@ -28,74 +28,69 @@ def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_neg_samples: in
     train_df['item'] = train_df['item'].map(item2idx)
     
     total = train_df.groupby('user')['item'].apply(np.array)
-    train = list()
-    valid = list()
+    train_seq = list()
+    valid_seq = list()
+    valid_target = list()
+    infer_seq = list()
     valid_cand = list()
-    infer = list()
     infer_cand = list()
     for user_idx, user_total in enumerate(tqdm(total)):
-        # 전체 negative
-        total_neg = np.setdiff1d(np.arange(1, n_items+1), user_total)
-        # 제일 뒤 절반, 앞에서 랜덤 절반 추출
-        valid_pos = np.random.choice(user_total[:-(k//2)], (k//2), replace=False)
-        valid_pos = np.append(valid_pos, user_total[-(k-k//2):])
-        # 전체 negative 중에 랜덤 추출
-        valid_neg = np.random.choice(total_neg, n_neg_samples, replace=False)
-        valid_pos_neg = np.append(valid_pos, valid_neg)
-        valid_cand.append(valid_pos_neg)
+        # user_valid_target: 맨 뒤에서 5개, 중간에서 5개 추출
+        user_valid_target = np.random.choice(user_total[:-(k//2)], (k//2), replace=False)
+        user_valid_target = np.append(user_valid_target, user_total[-(k-k//2):])
+        valid_target.append(user_valid_target)
         
-        # valid_pos 제외
-        total_train = user_total[~np.isin(user_total, valid_pos)]
-        # train
-        train_sample_idx = np.sort(np.random.choice(
-            np.arange(0, total_train.size), min(total_train.size, max_len), replace=False))
-        train_sample = total_train[train_sample_idx]
-        train.append(train_sample)
-        # valid
-        valid_sample_idx = np.sort(np.random.choice(
-            np.arange(0, total_train.size), min(total_train.size, max_len-1), replace=False))
-        valid_sample = np.append(total_train[valid_sample_idx], n_items+1)
-        if valid_sample.size < max_len:
-            pad_len = max_len - valid_sample.size
-            valid_sample = np.append([0]*pad_len, valid_sample)
-        valid.append(torch.tensor(valid_sample).unsqueeze(0))
-        # infer
-        infer_sample_idx = np.sort(np.random.choice(
-            np.arange(0, user_total.size), min(user_total.size, max_len-1), replace=False))
-        infer_sample = np.append(user_total[infer_sample_idx], n_items+1)
-        if infer_sample.size < max_len:
-            pad_len = max_len - infer_sample.size
-            infer_sample = np.append([0]*pad_len, infer_sample)
-        infer.append(torch.tensor(infer_sample).unsqueeze(0))
-        infer_cand.append(total_neg)
+        # user_total_train: user_valid_target 제외
+        user_total_train = user_total[~np.isin(user_total, user_valid_target)]
+        # max_len만큼 여러번 샘플링해서 train_seq에 추가
+        for _ in range(1):
+            user_train_seq_idx = np.random.choice(
+                np.arange(0, user_total_train.size), min(user_total_train.size, max_len), replace=False)
+            user_train_seq_idx = np.sort(user_train_seq_idx)
+            train_sample = user_total_train[user_train_seq_idx]
+            train_seq.append(train_sample)
         
-        # if user_idx == 20:
-        #     print("user_total")
-        #     print(user_total)
-        #     print("total_train")
-        #     print(total_train)
-        #     print("valid_pos")
-        #     print(valid_pos)
-        #     print("train_sample_idx")
-        #     print(train_sample_idx)
-        #     print("train_sample")
-        #     print(train_sample)
-        #     return
-        # print(valid_pos)
-        # print(valid_pos_neg)
-        # print(train_sample)
-        # print(np.append(train_sample[1:], n_items+1))
-        # print(infer_sample)
-        # print(infer_sample.size)
-        # return
-    
-    data = {'train': train,
-            'valid': valid,
+        temp_valid_seq_idx = np.sort(np.random.choice(
+            np.arange(0, user_total_train.size), min(user_total_train.size, max_len-k), replace=False))
+        temp_valid_seq = user_total_train[temp_valid_seq_idx]
+        user_valid_seq = np.zeros(temp_valid_seq.size+k, dtype=int)
+        user_valid_seq[-k//2:] = n_items+1
+        idx = np.sort(
+            np.random.choice(np.arange(0, temp_valid_seq.size+(k//2)), k//2, replace=False))
+        user_valid_seq[idx] = n_items+1
+        user_valid_seq[user_valid_seq == 0] = temp_valid_seq
+        if user_valid_seq.size < max_len :
+            pad_len = max_len - user_valid_seq.size
+            user_valid_seq = np.append([0]*pad_len, user_valid_seq)
+        valid_seq.append(torch.tensor(user_valid_seq).unsqueeze(0))
+        
+        temp_infer_seq_idx = np.sort(np.random.choice(
+            np.arange(0, user_total.size), min(user_total.size, max_len-k), replace=False))
+        temp_infer_seq = user_total[temp_infer_seq_idx]
+        user_infer_seq = np.zeros(temp_infer_seq.size+k, dtype=int)
+        user_infer_seq[-k//2:] = n_items+1
+        idx = np.sort(
+            np.random.choice(np.arange(0, temp_infer_seq.size+(k//2)), k//2, replace=False))
+        user_infer_seq[idx] = n_items+1
+        user_infer_seq[user_infer_seq == 0] = temp_infer_seq
+        if user_infer_seq.size < max_len :
+            pad_len = max_len - user_infer_seq.size
+            user_infer_seq = np.append([0]*pad_len, user_infer_seq)
+        infer_seq.append(torch.tensor(user_infer_seq).unsqueeze(0))
+        
+        user_infer_cand = np.setdiff1d(np.arange(1, n_items+1), user_total)
+        user_valid_cand = np.append(user_valid_target, user_infer_cand)
+        valid_cand.append(user_valid_cand)
+        infer_cand.append(user_infer_cand)
+        
+    data = {'train': train_seq,
+            'valid': valid_seq,
+            'valid_target': valid_target,
+            'infer': infer_seq,
             'valid_cand': valid_cand,
-            'infer': infer,
             'infer_cand': infer_cand}
     
-    return data, n_users, n_items, idx2item
+    return data, n_items, n_users, idx2item
 
 
 class BERT4RecDataset(Dataset):
@@ -104,35 +99,48 @@ class BERT4RecDataset(Dataset):
                  n_users: int,
                  n_items: int,
                  max_len: int,
+                 k:int,
                  mask_prob: float):
         self.train_data = train_data
         self.n_users = n_users
         self.n_items = n_items
         self.max_len = max_len
+        self.k = k
         self.mask_prob = mask_prob
 
     def __len__(self):
-        return self.n_users
+        return len(self.train_data)
 
     def __getitem__(self, user_idx: int) -> Tuple[torch.tensor, torch.tensor]: 
         seq = self.train_data[user_idx]
-        masked_seq = []
-        labels = []
-        for item_idx in seq[:-1]:
-            prob = np.random.random()
-            if prob < self.mask_prob:
-                labels.append(item_idx)  # 학습에 사용
-                masked_seq.append(self.n_items+1)
-            else:
-                labels.append(0)  # 학습에 사용 X
-                masked_seq.append(item_idx)
-        labels.append(seq[-1])
-        masked_seq.append(self.n_items+1)
+        masked_seq = seq.copy()
+        labels = np.zeros_like(seq)
+        # for item_idx in seq[:-(self.k//2)]:
+        #     prob = np.random.random()
+        #     if prob < self.mask_prob:
+        #         labels.append(item_idx)  # 학습에 사용
+        #         masked_seq.append(self.n_items+1)
+        #     else:
+        #         labels.append(0)  # 학습에 사용 X
+        #         masked_seq.append(item_idx)
+        # labels.extend(seq[-(self.k//2):])
+        # masked_seq.extend([self.n_items+1]*(self.k//2))
+        
+        mask_idx = np.random.choice(np.arange(0, seq.size-(self.k//2)), int(seq.size*self.mask_prob))
+        # 중간 랜덤 5개
+        masked_seq[mask_idx] = self.n_items+1
+        # 마지막 5개
+        masked_seq[-(self.k//2):] = self.n_items+1
+        labels[mask_idx] = seq[mask_idx]
+        labels[-(self.k//2):] = seq[-(self.k//2):]
                 
         # zero padding
         if seq.size < self.max_len:
             pad_len = self.max_len - seq.size
-            masked_seq = [0] * pad_len + masked_seq
-            labels = [0] * pad_len + labels
+            masked_seq = np.append([0] * pad_len, masked_seq)
+            labels = np.append([0] * pad_len, labels)
         
-        return torch.LongTensor(masked_seq), torch.LongTensor(labels)
+        masked_seq = torch.LongTensor(masked_seq)
+        labels = torch.LongTensor(labels)
+        
+        return masked_seq, labels

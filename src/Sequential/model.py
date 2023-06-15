@@ -47,6 +47,7 @@ class BERT4Rec(nn.Module):
                  dropout_rate: float,
                  device: torch.device):
         super(BERT4Rec, self).__init__()
+        self.n_items = n_items
         self.max_len = max_len
         self.n_layers = n_layers
         self.device = device

@@ -37,13 +37,21 @@ def main():
     data, n_items, n_users, idx2item = process_data(train_df, CONFIG['max_len'], CONFIG['k'], CONFIG['n_neg_samples'])
     # print(data['train'][20])
     # print(data['valid'][20])
-    # print(data['valid_cand'][20][:10])
     # print(data['infer'][20])
+    # print(data['valid_target'][20])
+    # print(data['valid_cand'][20][:20])
+    # print(data['infer_cand'][20][:10])
     # exit()
     
     print("Create Dataset and Dataloader.")
-    dataset = BERT4RecDataset(data['train'], n_users, n_items, CONFIG['max_len'], CONFIG['mask_prob'])
+    dataset = BERT4RecDataset(data['train'],
+                              n_users,
+                              n_items,
+                              CONFIG['max_len'],
+                              CONFIG['k'],
+                              CONFIG['mask_prob'])
     data_loader = DataLoader(dataset, batch_size=CONFIG['batch_size'], shuffle=True)
+    
     
     print("Create BERT4Rec Model.")
     model = BERT4Rec(n_items,

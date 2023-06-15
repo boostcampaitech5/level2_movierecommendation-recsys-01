@@ -32,18 +32,21 @@ def train(model: torch.nn.Module,
     
 def validate(model: torch.nn.Module,
              valid_data: pd.Series,
-             neg_sample: list,
+             valid_cand: list,
              k: int) -> Tuple[float, float]:
     recall = 0
     model.eval()
     for user_idx, user_seq in enumerate(tqdm(valid_data)):
         user_seq = user_seq.to(model.device)
+        mask = (user_seq==model.n_items+1)
         with torch.no_grad():
-            pred = -model.forward(user_seq)
-            pred = pred[0][-1][neg_sample[user_idx]]
+            pred = model.forward(user_seq)
+        softmax_score = nn.Softmax(dim=1)(pred[mask])
+        score_sum = softmax_score.sum(dim=0)
+        cand_score = score_sum[valid_cand[user_idx]]
             
         # rank for valid item
-        rank_list = pred.argsort().argsort()[:k]     
+        rank_list = cand_score.argsort().argsort()[:k]   
         recall_cnt = 0
         for rank in rank_list: # @k
             if rank < k:
@@ -102,7 +105,7 @@ def run(model: torch.nn.Module,
     
 def inference(model: torch.nn.Module,
               infer_data: pd.Series,
-              candidate: list,
+              infer_cand: list,
               k: int,
               sub_df: pd.DataFrame,
               idx2item: dict,
@@ -116,11 +119,15 @@ def inference(model: torch.nn.Module,
     inference = np.array([])
     for user_idx, user_seq in enumerate(tqdm(infer_data)):
         user_seq = user_seq.to(model.device)
-        user_cand = candidate[user_idx]
+        mask = (user_seq==model.n_items+1)
         with torch.no_grad():
-            pred = model.forward(user_seq)[0][-1][user_cand]
-        top_k_idx = pred.argsort(descending=True)[:k].to('cpu')
-        top_k = user_cand[top_k_idx]
+            pred = model.forward(user_seq)
+        softmax_score = nn.Softmax(dim=1)(pred[mask])
+        score_sum = softmax_score.sum(dim=0)
+        cand_score = score_sum[infer_cand[user_idx]]
+
+        top_k_idx = cand_score.argsort(descending=True)[:k].to('cpu')
+        top_k = infer_cand[user_idx][top_k_idx]
         inference = np.append(inference, top_k)
         
     sub_df['item'] = inference
