@@ -90,7 +90,7 @@ def make_context_yaml(model_name):
         item: [item_id, year, genre, writer, director]
 
     train_neg_sample_args:
-        uniform: 1
+        uniform: 10
         
     eval_args:
         split: {'RS': [8, 1, 1]}
@@ -107,3 +107,25 @@ def make_context_yaml(model_name):
     os.makedirs(outpath, exist_ok=True)
     with open(os.path.join(outpath,f"{model_name}.yaml"),"w") as f:
         f.write(yaml_data)
+        
+def make_sequence_yaml(model_name):
+    
+    yaml_data="""
+    USER_ID_FIELD: user_id
+    ITEM_ID_FIELD: item_id
+    TIME_FIELD: timestamp
+
+    load_col:
+        inter: [user_id, item_id, timestamp]
+        
+    train_neg_sample_args: ~
+    ITEM_LIST_LENGTH_FIELD: item_length
+    LIST_SUFFIX: _list
+    MAX_ITEM_LIST_LENGTH: 50
+    """
+    outpath = f"sequence_yaml"
+    
+    os.makedirs(outpath, exist_ok=True)
+    with open(os.path.join(outpath,f"{model_name}.yaml"),"w") as f:
+        f.write(yaml_data)
+        

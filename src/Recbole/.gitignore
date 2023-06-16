@@ -5,5 +5,7 @@ saved/
 yaml/
 context_yaml/
 general_yaml/
+sequence_yaml/
+*.ipynb
 
 !.gitignore
