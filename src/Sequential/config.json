@@ -9,11 +9,12 @@
     "n_heads": 4,
     "pffn_hidden_dim": 512,
     "dropout_rate": 0.5,
+    "bidirection": 0,
     "mask_prob": 0.1,
     "batch_size": 64,
     "lr": 0.001,
-    "n_epochs": 200,
+    "n_epochs": 2,
     "max_patience": 20,
-    "n_neg_samples": 1000,
+    "n_samples": 2,
     "k": 10
 }

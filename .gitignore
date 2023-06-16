@@ -1,5 +1,5 @@
-/model/
-/output/
+src/Sequenctial/model/
+src/Sequenctial/output/
 
 # csv files
 **.csv

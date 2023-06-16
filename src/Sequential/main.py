@@ -34,14 +34,7 @@ def main():
         
     print("Load and Process Data.")
     train_df, sub_df = load_data(data_dir)
-    data, n_items, n_users, idx2item = process_data(train_df, CONFIG['max_len'], CONFIG['k'], CONFIG['n_neg_samples'])
-    # print(data['train'][20])
-    # print(data['valid'][20])
-    # print(data['infer'][20])
-    # print(data['valid_target'][20])
-    # print(data['valid_cand'][20][:20])
-    # print(data['infer_cand'][20][:10])
-    # exit()
+    data, n_items, n_users, idx2item = process_data(train_df, CONFIG['max_len'], CONFIG['k'], CONFIG['n_samples'])
     
     print("Create Dataset and Dataloader.")
     dataset = BERT4RecDataset(data['train'],
@@ -60,12 +53,11 @@ def main():
                      CONFIG['n_layers'],
                      CONFIG['n_heads'],
                      CONFIG['pffn_hidden_dim'],
+                     bool(CONFIG['bidirection']),
                      CONFIG['dropout_rate'],
                      device=device).to(device)
-    
+
     print(f"Start Training for {CONFIG['n_epochs']} Epochs.")
-    # print("Using Item Embedding As Weight Of Last Output Layer")
-    # print("Using Linear Layer in Output Layer")
     best_recall, best_epoch = run(model,
                                   data_loader,
                                   data['valid'],

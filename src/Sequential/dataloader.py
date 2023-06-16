@@ -14,7 +14,7 @@ def load_data(data_dir: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     return train_df, sub_df
 
 
-def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_neg_samples: int) -> Tuple[dict, int, int, dict]:
+def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_samples: int) -> Tuple[dict, int, int, dict]:
     item_idx = train_df['item'].unique()
     user_idx = train_df['user'].unique()
     
@@ -42,14 +42,16 @@ def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_neg_samples: in
         
         # user_total_train: user_valid_target 제외
         user_total_train = user_total[~np.isin(user_total, user_valid_target)]
-        # max_len만큼 여러번 샘플링해서 train_seq에 추가
-        for _ in range(1):
+        
+        # user_train_seq: user_total_train에서 max_len만큼 샘플링(n_samples 횟수 만큼)
+        for _ in range(n_samples):
             user_train_seq_idx = np.random.choice(
                 np.arange(0, user_total_train.size), min(user_total_train.size, max_len), replace=False)
             user_train_seq_idx = np.sort(user_train_seq_idx)
-            train_sample = user_total_train[user_train_seq_idx]
-            train_seq.append(train_sample)
+            user_train_seq = user_total_train[user_train_seq_idx]
+            train_seq.append(user_train_seq)
         
+        # user_valid_seq: user_total_train에서 max_len-k만큼 샘플링. 이후 k개의 masking 섞어줌 (절반은 맨 뒤에, 나머지는 중간에 랜덤)
         temp_valid_seq_idx = np.sort(np.random.choice(
             np.arange(0, user_total_train.size), min(user_total_train.size, max_len-k), replace=False))
         temp_valid_seq = user_total_train[temp_valid_seq_idx]
@@ -64,6 +66,7 @@ def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_neg_samples: in
             user_valid_seq = np.append([0]*pad_len, user_valid_seq)
         valid_seq.append(torch.tensor(user_valid_seq).unsqueeze(0))
         
+        # user_infer_seq: user_total에서 max_len-k만큼 샘플링. 이후 k개의 masking 섞어줌 (절반은 맨 뒤에, 나머지는 중간에 랜덤)
         temp_infer_seq_idx = np.sort(np.random.choice(
             np.arange(0, user_total.size), min(user_total.size, max_len-k), replace=False))
         temp_infer_seq = user_total[temp_infer_seq_idx]
@@ -78,7 +81,9 @@ def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_neg_samples: in
             user_infer_seq = np.append([0]*pad_len, user_infer_seq)
         infer_seq.append(torch.tensor(user_infer_seq).unsqueeze(0))
         
+        # user_valid_cand: 전체 negative + user_valid_target
         user_infer_cand = np.setdiff1d(np.arange(1, n_items+1), user_total)
+        # user_infer_candL 전체 negative
         user_valid_cand = np.append(user_valid_target, user_infer_cand)
         valid_cand.append(user_valid_cand)
         infer_cand.append(user_infer_cand)
@@ -115,21 +120,11 @@ class BERT4RecDataset(Dataset):
         seq = self.train_data[user_idx]
         masked_seq = seq.copy()
         labels = np.zeros_like(seq)
-        # for item_idx in seq[:-(self.k//2)]:
-        #     prob = np.random.random()
-        #     if prob < self.mask_prob:
-        #         labels.append(item_idx)  # 학습에 사용
-        #         masked_seq.append(self.n_items+1)
-        #     else:
-        #         labels.append(0)  # 학습에 사용 X
-        #         masked_seq.append(item_idx)
-        # labels.extend(seq[-(self.k//2):])
-        # masked_seq.extend([self.n_items+1]*(self.k//2))
         
+        # 중간 랜덤 5개 masking
         mask_idx = np.random.choice(np.arange(0, seq.size-(self.k//2)), int(seq.size*self.mask_prob))
-        # 중간 랜덤 5개
         masked_seq[mask_idx] = self.n_items+1
-        # 마지막 5개
+        # 마지막 5개 masking
         masked_seq[-(self.k//2):] = self.n_items+1
         labels[mask_idx] = seq[mask_idx]
         labels[-(self.k//2):] = seq[-(self.k//2):]

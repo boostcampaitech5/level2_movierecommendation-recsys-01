@@ -14,20 +14,22 @@ def train(model: torch.nn.Module,
           criterion: torch.nn,
           optimizer: torch.optim) -> torch.tensor:
     model.train()
-    for seq, label in data_loader:
+    total_loss = 0 
+    for seq, label in tqdm(data_loader):
         seq = seq.to(model.device)
         label = label.to(model.device)
         
         pred = model.forward(seq)
         pred = pred.view(-1, pred.size(-1))
         label = label.view(-1).to(model.device)
-        loss = criterion(pred, label)
         
+        loss = criterion(pred, label)
+        total_loss += loss.item()
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        
-        return loss
+    return total_loss
     
     
 def validate(model: torch.nn.Module,
@@ -42,11 +44,11 @@ def validate(model: torch.nn.Module,
         with torch.no_grad():
             pred = model.forward(user_seq)
         softmax_score = nn.Softmax(dim=1)(pred[mask])
-        score_sum = softmax_score.sum(dim=0)
+        score_sum = -softmax_score.sum(dim=0)
         cand_score = score_sum[valid_cand[user_idx]]
             
         # rank for valid item
-        rank_list = cand_score.argsort().argsort()[:k]   
+        rank_list = cand_score.argsort().argsort()[:k] 
         recall_cnt = 0
         for rank in rank_list: # @k
             if rank < k:
@@ -73,6 +75,7 @@ def run(model: torch.nn.Module,
     state_dict = dict()
     for epoch in tqdm(range(1, n_epochs+1)): 
         print(f"Epoch: {epoch}")
+        print("Train")
         train_loss = train(model, data_loader, criterion, optimizer)
         print("Validate")
         recall = validate(model, valid_data, neg_sample, k)
