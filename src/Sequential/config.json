@@ -11,10 +11,10 @@
     "dropout_rate": 0.5,
     "bidirection": 0,
     "mask_prob": 0.1,
-    "batch_size": 64,
+    "batch_size": 256,
     "lr": 0.001,
-    "n_epochs": 2,
-    "max_patience": 20,
-    "n_samples": 2,
+    "n_epochs": 100,
+    "max_patience": 10,
+    "n_samples": 1,
     "k": 10
 }

@@ -1,5 +1,7 @@
 src/Sequential/model/
 src/Sequential/output/
+src/Sequential/wandb/
+src/Sequential/key.txt
 
 # csv files
 **.csv

@@ -5,8 +5,8 @@ import pandas as pd
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from utils import get_timestamp
 from typing import Tuple
+import wandb
 
 
 def train(model: torch.nn.Module,
@@ -97,6 +97,14 @@ def run(model: torch.nn.Module,
                 print(f"No Score Improvement for {max_patience} epochs")
                 print("Early Stopped Training")
                 break
+        wandb.log(
+            dict(
+                epoch=epoch,
+                train_loss=train_loss,
+                recall=recall,
+                best_recall=best_recall,
+            )
+        )
             
     print(f"Best Recall@{k} Confirmed: {best_epoch}'th epoch")
     print(f"Best Recall@{k}: {best_recall:.4f}")

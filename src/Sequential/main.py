@@ -5,6 +5,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
+import wandb
 
 from utils import get_timestamp, set_seeds
 from dataloader import load_data, process_data, BERT4RecDataset
@@ -13,6 +14,10 @@ from trainer import run, inference
     
     
 def main():
+    with open(os.path.join(os.curdir, 'key.txt'), 'r') as f:
+        key = f.readline()
+    wandb.login(key=key)
+    
     print("Load Configuration and Parameters File.")
     with open(os.path.join(os.curdir, 'config.json'), 'r') as f:
         CONFIG = json.load(f)
@@ -31,6 +36,13 @@ def main():
     
     for config, value in CONFIG.items():
         print(f"{config}: {value}")
+        
+    # wandb logging
+    wandb.init(
+        project="movie_rec",
+        name=f"{'BERT4Rec'}-{timestamp}",
+        config=CONFIG,
+    )
         
     print("Load and Process Data.")
     train_df, sub_df = load_data(data_dir)
