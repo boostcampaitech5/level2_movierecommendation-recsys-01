@@ -14,10 +14,6 @@ from trainer import run, inference
     
     
 def main():
-    with open(os.path.join(os.curdir, 'key.txt'), 'r') as f:
-        key = f.readline()
-    wandb.login(key=key)
-    
     print("Load Configuration and Parameters File.")
     with open(os.path.join(os.curdir, 'config.json'), 'r') as f:
         CONFIG = json.load(f)
@@ -34,19 +30,23 @@ def main():
     print(f"device: {device}")
     timestamp = get_timestamp()
     
+    if CONFIG['logging'] == True:
+        print("Start Logging with WandB")
+        with open(os.path.join(os.curdir, 'key.txt'), 'r') as f:
+            key = f.readline()
+        wandb.login(key=key)
+        wandb.init(
+            project="movie_rec",
+            name=f"{'BERT4Rec'}-{timestamp}",
+            config=CONFIG,
+        )
+        
     for config, value in CONFIG.items():
         print(f"{config}: {value}")
         
-    # wandb logging
-    wandb.init(
-        project="movie_rec",
-        name=f"{'BERT4Rec'}-{timestamp}",
-        config=CONFIG,
-    )
-        
     print("Load and Process Data.")
     train_df, sub_df = load_data(data_dir)
-    data, n_items, n_users, idx2item = process_data(train_df, CONFIG['max_len'], CONFIG['k'], CONFIG['n_samples'])
+    data, n_items, n_users, idx2item = process_data(train_df, CONFIG['max_len'], CONFIG['k'], CONFIG['n_samples'], CONFIG['tail_ratio'])
     
     print("Create Dataset and Dataloader.")
     dataset = BERT4RecDataset(data['train'],
@@ -65,7 +65,7 @@ def main():
                      CONFIG['n_layers'],
                      CONFIG['n_heads'],
                      CONFIG['pffn_hidden_dim'],
-                     bool(CONFIG['bidirection']),
+                     CONFIG['unidirection'],
                      CONFIG['dropout_rate'],
                      device=device).to(device)
 
@@ -78,6 +78,7 @@ def main():
                                   CONFIG['lr'],
                                   CONFIG['max_patience'],
                                   CONFIG['k'],
+                                  bool(CONFIG['logging']),
                                   model_dir,
                                   timestamp)
     

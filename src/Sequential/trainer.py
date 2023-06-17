@@ -66,6 +66,7 @@ def run(model: torch.nn.Module,
         lr: float,
         max_patience: int,
         k: int,
+        logging: bool,
         model_dir: str,
         timestamp: str):
     criterion = nn.CrossEntropyLoss(ignore_index=0) # label이 0인 경우 무시
@@ -77,9 +78,9 @@ def run(model: torch.nn.Module,
         print(f"Epoch: {epoch}")
         print("Train")
         train_loss = train(model, data_loader, criterion, optimizer)
+        print(f"Loss: {train_loss:.4f}")
         print("Validate")
         recall = validate(model, valid_data, neg_sample, k)
-        print(f"Loss: {train_loss:.4f}")
         print(f"Recall@{k}: {recall:.4f}")
         
         if best_recall < recall :
@@ -97,14 +98,14 @@ def run(model: torch.nn.Module,
                 print(f"No Score Improvement for {max_patience} epochs")
                 print("Early Stopped Training")
                 break
-        wandb.log(
-            dict(
-                epoch=epoch,
-                train_loss=train_loss,
-                recall=recall,
-                best_recall=best_recall,
+        if logging == True:
+            wandb.log(
+                dict(
+                    train_loss=train_loss,
+                    recall=recall,
+                    best_recall=best_recall,
+                )
             )
-        )
             
     print(f"Best Recall@{k} Confirmed: {best_epoch}'th epoch")
     print(f"Best Recall@{k}: {best_recall:.4f}")

@@ -14,7 +14,41 @@ def load_data(data_dir: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     return train_df, sub_df
 
 
-def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_samples: int) -> Tuple[dict, int, int, dict]:
+# 전체 sequence에서 max_len만큼 sampling
+# tail_ratio: max_len의 tail_ratio만큼은 제일 마지막에서 샘플링, 나머지는 중간에서 랜덤 샘플링
+def seq_sampling(total: pd.Series, max_len: int, tail_ratio: float) -> np.array:
+    if total.size > max_len:
+        tail_len = int(max_len * tail_ratio)
+        sample_idx = np.random.choice(np.arange(0, total.size - tail_len), max_len - tail_len, replace=False)
+        sample_idx = np.sort(sample_idx)
+        sample_seq = total[sample_idx]
+        if tail_len != 0:
+            sample_seq = np.append(sample_seq, total[-tail_len:])
+    else :
+        sample_seq = total
+        
+    return sample_seq
+
+
+# valid, test sequence에 k개 mask 섞어줌
+def mix_mask(temp_seq: np.array, k: int, mask: int) -> np.array:
+    seq = np.zeros(temp_seq.size+k, dtype=int)
+    seq[-k//2:] = mask
+    mask_idx = np.sort(np.random.choice(np.arange(0, temp_seq.size+(k//2)), k//2, replace=False))
+    seq[mask_idx] = mask
+    seq[seq == 0] = temp_seq
+    
+    return seq
+
+
+def add_padding(seq: np.array, max_len: int) -> np.array:
+    pad_len = max_len - seq.size
+    seq = np.append([0] * pad_len, seq)
+    
+    return seq
+
+
+def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_samples: int, tail_ratio: float) -> Tuple[dict, int, int, dict]:
     item_idx = train_df['item'].unique()
     user_idx = train_df['user'].unique()
     
@@ -35,7 +69,7 @@ def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_samples: int) -
     valid_cand = list()
     infer_cand = list()
     for user_idx, user_total in enumerate(tqdm(total)):
-        # user_valid_target: 맨 뒤에서 5개, 중간에서 5개 추출
+        # user_valid_target: 맨 뒤에서 절반, 중간에서 절반 추출
         user_valid_target = np.random.choice(user_total[:-(k//2)], (k//2), replace=False)
         user_valid_target = np.append(user_valid_target, user_total[-(k-k//2):])
         valid_target.append(user_valid_target)
@@ -45,40 +79,21 @@ def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_samples: int) -
         
         # user_train_seq: user_total_train에서 max_len만큼 샘플링(n_samples 횟수 만큼)
         for _ in range(n_samples):
-            user_train_seq_idx = np.random.choice(
-                np.arange(0, user_total_train.size), min(user_total_train.size, max_len), replace=False)
-            user_train_seq_idx = np.sort(user_train_seq_idx)
-            user_train_seq = user_total_train[user_train_seq_idx]
+            user_train_seq = seq_sampling(user_total_train, max_len, tail_ratio)
             train_seq.append(user_train_seq)
-        
+
         # user_valid_seq: user_total_train에서 max_len-k만큼 샘플링. 이후 k개의 masking 섞어줌 (절반은 맨 뒤에, 나머지는 중간에 랜덤)
-        temp_valid_seq_idx = np.sort(np.random.choice(
-            np.arange(0, user_total_train.size), min(user_total_train.size, max_len-k), replace=False))
-        temp_valid_seq = user_total_train[temp_valid_seq_idx]
-        user_valid_seq = np.zeros(temp_valid_seq.size+k, dtype=int)
-        user_valid_seq[-k//2:] = n_items+1
-        idx = np.sort(
-            np.random.choice(np.arange(0, temp_valid_seq.size+(k//2)), k//2, replace=False))
-        user_valid_seq[idx] = n_items+1
-        user_valid_seq[user_valid_seq == 0] = temp_valid_seq
+        temp_valid_seq = seq_sampling(user_total_train, max_len-k, tail_ratio)
+        user_valid_seq = mix_mask(temp_valid_seq, k, n_items+1)
+        # add padding
         if user_valid_seq.size < max_len :
-            pad_len = max_len - user_valid_seq.size
-            user_valid_seq = np.append([0]*pad_len, user_valid_seq)
+            user_valid_seq = add_padding(user_valid_seq, max_len)
         valid_seq.append(torch.tensor(user_valid_seq).unsqueeze(0))
         
-        # user_infer_seq: user_total에서 max_len-k만큼 샘플링. 이후 k개의 masking 섞어줌 (절반은 맨 뒤에, 나머지는 중간에 랜덤)
-        temp_infer_seq_idx = np.sort(np.random.choice(
-            np.arange(0, user_total.size), min(user_total.size, max_len-k), replace=False))
-        temp_infer_seq = user_total[temp_infer_seq_idx]
-        user_infer_seq = np.zeros(temp_infer_seq.size+k, dtype=int)
-        user_infer_seq[-k//2:] = n_items+1
-        idx = np.sort(
-            np.random.choice(np.arange(0, temp_infer_seq.size+(k//2)), k//2, replace=False))
-        user_infer_seq[idx] = n_items+1
-        user_infer_seq[user_infer_seq == 0] = temp_infer_seq
+        temp_infer_seq = seq_sampling(user_total, max_len-k, 0.25)
+        user_infer_seq = mix_mask(temp_infer_seq, k, n_items+1)
         if user_infer_seq.size < max_len :
-            pad_len = max_len - user_infer_seq.size
-            user_infer_seq = np.append([0]*pad_len, user_infer_seq)
+            user_infer_seq = add_padding(user_infer_seq, max_len)
         infer_seq.append(torch.tensor(user_infer_seq).unsqueeze(0))
         
         # user_valid_cand: 전체 negative + user_valid_target
