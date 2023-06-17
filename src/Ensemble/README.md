@@ -32,7 +32,11 @@ python topk_ensemble.py --weight=[weight1, weight2, ...]
 
 2. for_ensemble 디렉토리에 저장하는 csv 파일은 추천 아이템이 10개 이상이고, 모든 csv는 동일한 추천 아이템 개수를 가져야 합니다. 
 
-3. topk_ensemble의 weight 인자에는 리스트 형식으로 가중치를 입력해야 합니다. (ex: [0.4, 0.4, 0.2])
+3. topk_ensemble의 weight 인자에는 리스트 형식으로 가중치를 입력해야 합니다. (ex: [0.4,0.4,0.2])
+
+    1. 어떤 파일에 얼마나 가중치를 줄 지는, abcd 순으로 입력하여 결정할 수 있습니다.
+
+    2. weight 인자에 입력할 리스트는 띄어쓰기 없이 입력해야 합니다. 
 
 4. topk_ensemble.py의 로직은 다음과 같습니다.
 
