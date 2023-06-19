@@ -33,7 +33,7 @@ def train(model: torch.nn.Module,
     
     
 def validate(model: torch.nn.Module,
-             valid_data: pd.Series,
+             valid_data: list,
              valid_cand: list,
              k: int) -> Tuple[float, float]:
     recall = 0
@@ -60,12 +60,12 @@ def validate(model: torch.nn.Module,
 
 def run(model: torch.nn.Module,
         data_loader: torch.utils.data.DataLoader,
-        valid_data: pd.Series,
-        neg_sample: list,
+        valid_data: list,
+        valid_cand: list,
+        k: int,
         n_epochs: int,
         lr: float,
         max_patience: int,
-        k: int,
         logging: bool,
         model_dir: str,
         timestamp: str):
@@ -80,7 +80,7 @@ def run(model: torch.nn.Module,
         train_loss = train(model, data_loader, criterion, optimizer)
         print(f"Loss: {train_loss:.4f}")
         print("Validate")
-        recall = validate(model, valid_data, neg_sample, k)
+        recall = validate(model, valid_data, valid_cand, k)
         print(f"Recall@{k}: {recall:.4f}")
         
         if best_recall < recall :
@@ -107,8 +107,8 @@ def run(model: torch.nn.Module,
                 )
             )
             
-    print(f"Best Recall@{k} Confirmed: {best_epoch}'th epoch")
     print(f"Best Recall@{k}: {best_recall:.4f}")
+    print(f"Best Recall@{k} Confirmed: {best_epoch}'th epoch")
     torch.save(obj={"model": state_dict, "epoch": best_epoch},
                f=os.path.join(model_dir, f"bert4rec_{timestamp}.pt"))
     
@@ -123,11 +123,15 @@ def inference(model: torch.nn.Module,
               idx2item: dict,
               model_dir: str,
               output_dir: str,
-              timestamp: str):
+              timestamp: str,
+              model_name: str=None):
     model.eval()
-    state_dict = torch.load(os.path.join(model_dir, f'bert4rec_{timestamp}.pt'))['model']
+    if model_name is not None:
+        state_dict = torch.load(os.path.join(model_dir, f"{model_name}.pt"))['model']
+        print(f"Load From Pretrained {model_name}.pt")
+    else:
+        state_dict = torch.load(os.path.join(model_dir, f'bert4rec_{timestamp}.pt'))['model']
     model.load_state_dict(state_dict)
-    
     inference = np.array([])
     for user_idx, user_seq in enumerate(tqdm(infer_data)):
         user_seq = user_seq.to(model.device)
@@ -141,7 +145,10 @@ def inference(model: torch.nn.Module,
         top_k_idx = cand_score.argsort(descending=True)[:k].to('cpu')
         top_k = infer_cand[user_idx][top_k_idx]
         inference = np.append(inference, top_k)
-        
+    
+    if model_name is not None:
+        sub_df = sub_df.drop_duplicates(subset=['user'])
+        sub_df = sub_df.loc[np.repeat(sub_df.index.values, k)]
     sub_df['item'] = inference
     sub_df['item'] = sub_df['item'].map(idx2item).astype(int)
     sub_df.to_csv(os.path.join(output_dir, f"sub_{timestamp}.csv"), index=False)

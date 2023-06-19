@@ -14,17 +14,16 @@ from trainer import run, inference
     
     
 def main():
-    print("Load Configuration and Parameters File.")
+    print("Load Configuration File.")
     with open(os.path.join(os.curdir, 'config.json'), 'r') as f:
         CONFIG = json.load(f)
     
     data_dir = CONFIG['data_dir']
     model_dir = CONFIG['model_dir']
     output_dir = CONFIG['output_dir']
-    seed = CONFIG['seed']
     os.makedirs(name=model_dir, exist_ok=True)
     os.makedirs(name=output_dir, exist_ok=True)
-    set_seeds(seed)
+    set_seeds(CONFIG['seed'])
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"device: {device}")
@@ -46,7 +45,11 @@ def main():
         
     print("Load and Process Data.")
     train_df, sub_df = load_data(data_dir)
-    data, n_items, n_users, idx2item = process_data(train_df, CONFIG['max_len'], CONFIG['k'], CONFIG['n_samples'], CONFIG['tail_ratio'])
+    data, n_items, n_users, idx2item = process_data(train_df,
+                                                    CONFIG['max_len'],
+                                                    CONFIG['k'],
+                                                    CONFIG['n_samples'],
+                                                    CONFIG['tail_ratio'])
     
     print("Create Dataset and Dataloader.")
     dataset = BERT4RecDataset(data['train'],
@@ -74,15 +77,14 @@ def main():
                                   data_loader,
                                   data['valid'],
                                   data['valid_cand'],
+                                  CONFIG['k'],
                                   CONFIG['n_epochs'],
                                   CONFIG['lr'],
                                   CONFIG['max_patience'],
-                                  CONFIG['k'],
-                                  bool(CONFIG['logging']),
+                                  CONFIG['logging'],
                                   model_dir,
                                   timestamp)
     
-    print("Save Result and Config.")
     for config, value in CONFIG.items():
         print(f"{config}: {value}")
     result = {'best_recall': best_recall, 'best_epoch': best_epoch}

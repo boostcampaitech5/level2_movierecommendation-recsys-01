@@ -48,7 +48,11 @@ def add_padding(seq: np.array, max_len: int) -> np.array:
     return seq
 
 
-def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_samples: int, tail_ratio: float) -> Tuple[dict, int, int, dict]:
+def process_data(train_df: pd.DataFrame,
+                 max_len: int,
+                 k: int,
+                 n_samples: int,
+                 tail_ratio: float) -> Tuple[dict, int, int, dict]:
     item_idx = train_df['item'].unique()
     user_idx = train_df['user'].unique()
     
@@ -115,11 +119,11 @@ def process_data(train_df: pd.DataFrame, max_len: int, k: int, n_samples: int, t
 
 class BERT4RecDataset(Dataset):
     def __init__(self,
-                 train_data: pd.Series,
+                 train_data: list,
                  n_users: int,
                  n_items: int,
                  max_len: int,
-                 k:int,
+                 k: int,
                  mask_prob: float):
         self.train_data = train_data
         self.n_users = n_users
