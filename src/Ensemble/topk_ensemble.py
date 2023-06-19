@@ -31,7 +31,7 @@ def arg_as_list(value):
 
 def save_file(output: pd.DataFrame) -> None:
     # Create the output folder
-    output_folder = "./submission"
+    output_folder = "./output"
     os.makedirs(output_folder, exist_ok=True)
 
     # Save the ensemble result to a CSV file

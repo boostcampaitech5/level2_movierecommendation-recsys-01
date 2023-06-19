@@ -1,5 +1,6 @@
 for_ensemble/
 submission/
 log/
+output/
 
 !.gitignore

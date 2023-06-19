@@ -57,7 +57,7 @@ def ensemble_interaction(
     output.sort_index()
 
     # Create the output folder
-    output_folder = "./for_ensemble"
+    output_folder = "./output"
     os.makedirs(output_folder, exist_ok=True)
 
     date_time = korea_date_time()
