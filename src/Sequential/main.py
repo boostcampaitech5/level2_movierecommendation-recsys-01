@@ -1,10 +1,7 @@
 import os
 import json
-import numpy as np
-import pandas as pd
 import torch
-import torch.nn as nn
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader
 import wandb
 
 from utils import get_timestamp, set_seeds
@@ -25,8 +22,11 @@ def main():
     os.makedirs(name=output_dir, exist_ok=True)
     set_seeds(CONFIG['seed'])
     
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"device: {device}")
+    if CONFIG['device'] == 'cuda' and torch.cuda.is_available() == True :
+        device = torch.device('cuda')
+    else:
+        device = torch.device('cpu')
+        CONFIG['device'] = 'cpu'
     timestamp = get_timestamp()
     
     if CONFIG['logging'] == True:
@@ -60,7 +60,6 @@ def main():
                               CONFIG['mask_prob'])
     data_loader = DataLoader(dataset, batch_size=CONFIG['batch_size'], shuffle=True)
     
-    
     print("Create BERT4Rec Model.")
     model = BERT4Rec(n_items,
                      CONFIG['embed_dim'],
@@ -91,7 +90,7 @@ def main():
     result_config = {'result': result, 'config': CONFIG}
     with open(f"{model_dir}/bert4rec_{timestamp}.json", "w") as f:
         json.dump(result_config, f)
-    
+        
     print("Make Inference.")
     inference(model,
               data['infer'],
@@ -102,7 +101,12 @@ def main():
               model_dir,
               output_dir,
               timestamp)
+    CONFIG['tail_ratio'] += 0.25
+    with open(os.path.join(os.curdir, 'config.json'), 'w') as f:
+        json.dump(CONFIG, f)
+    wandb.finish()
 
 
 if __name__ == "__main__" :
-    main()
+    for _ in range(5):
+        main()

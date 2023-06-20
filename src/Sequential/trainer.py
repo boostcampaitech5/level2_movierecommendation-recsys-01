@@ -25,10 +25,11 @@ def train(model: torch.nn.Module,
         
         loss = criterion(pred, label)
         total_loss += loss.item()
-
+        
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+        
     return total_loss
     
     
@@ -36,8 +37,8 @@ def validate(model: torch.nn.Module,
              valid_data: list,
              valid_cand: list,
              k: int) -> Tuple[float, float]:
-    recall = 0
     model.eval()
+    recall = 0
     for user_idx, user_seq in enumerate(tqdm(valid_data)):
         user_seq = user_seq.to(model.device)
         mask = (user_seq==model.n_items+1)
@@ -71,6 +72,7 @@ def run(model: torch.nn.Module,
         timestamp: str):
     criterion = nn.CrossEntropyLoss(ignore_index=0) # label이 0인 경우 무시
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    
     best_recall, best_epoch = 0, -1
     patience = 0
     state_dict = dict()
@@ -88,6 +90,8 @@ def run(model: torch.nn.Module,
             best_recall = recall
             best_epoch = epoch
             state_dict = model.state_dict()
+            torch.save(obj={"model": state_dict, "recall": best_recall, "epoch": best_epoch},
+               f=os.path.join(model_dir, f"bert4rec_{timestamp}.pt"))
             patience = 0
         else :
             patience += 1
@@ -98,6 +102,7 @@ def run(model: torch.nn.Module,
                 print(f"No Score Improvement for {max_patience} epochs")
                 print("Early Stopped Training")
                 break
+            
         if logging == True:
             wandb.log(
                 dict(
@@ -109,8 +114,6 @@ def run(model: torch.nn.Module,
             
     print(f"Best Recall@{k}: {best_recall:.4f}")
     print(f"Best Recall@{k} Confirmed: {best_epoch}'th epoch")
-    torch.save(obj={"model": state_dict, "epoch": best_epoch},
-               f=os.path.join(model_dir, f"bert4rec_{timestamp}.pt"))
     
     return best_recall, best_epoch
     
@@ -126,12 +129,14 @@ def inference(model: torch.nn.Module,
               timestamp: str,
               model_name: str=None):
     model.eval()
+    
     if model_name is not None:
         state_dict = torch.load(os.path.join(model_dir, f"{model_name}.pt"))['model']
         print(f"Load From Pretrained {model_name}.pt")
     else:
         state_dict = torch.load(os.path.join(model_dir, f'bert4rec_{timestamp}.pt'))['model']
     model.load_state_dict(state_dict)
+    
     inference = np.array([])
     for user_idx, user_seq in enumerate(tqdm(infer_data)):
         user_seq = user_seq.to(model.device)
