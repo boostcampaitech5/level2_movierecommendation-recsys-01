@@ -38,6 +38,7 @@ def validate(model: torch.nn.Module,
              valid_cand: list,
              k: int) -> Tuple[float, float]:
     model.eval()
+    
     recall = 0
     for user_idx, user_seq in enumerate(tqdm(valid_data)):
         user_seq = user_seq.to(model.device)
