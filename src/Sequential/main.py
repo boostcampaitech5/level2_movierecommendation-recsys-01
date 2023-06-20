@@ -101,12 +101,13 @@ def main():
               model_dir,
               output_dir,
               timestamp)
-    CONFIG['tail_ratio'] += 0.25
-    with open(os.path.join(os.curdir, 'config.json'), 'w') as f:
-        json.dump(CONFIG, f)
+    # CONFIG['tail_ratio'] += 0.25
+    # with open(os.path.join(os.curdir, 'config.json'), 'w') as f:
+    #     json.dump(CONFIG, f)
     wandb.finish()
 
 
 if __name__ == "__main__" :
-    for _ in range(5):
-        main()
+    # for _ in range(5):
+    #     main()
+    main()
