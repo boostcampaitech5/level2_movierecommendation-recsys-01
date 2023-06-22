@@ -1,3 +1,5 @@
+<a name="readme-top"></a>
+
 <br />
 <div align="center">  
 <br>
@@ -64,8 +66,9 @@
 
 <!-- 협업 규칙 -->
 ## 협업 규칙
+<br>
 
-[협업 규칙](/RuleBook.md)
+- [협업 규칙](/RuleBook.md)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -101,23 +104,43 @@
 
 ## 모델 사용 방법
 
-각 모델별 README.md 파일을 링크합니다.
+각 모델별 사용 방법입니다.
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+- [ALS](/src/ALS/README.md)
 
+- [EASE](/src/EASE/README.md)
+
+- [Recbole](/src/EASE/Recbole.md)
+
+- [Sequential](/src/Sequential/README.md)
+
+
+## 앙상블 방법
+
+- [Ensemble](/src/Ensemble/README.md)
 
 
 
 ## 모델별 성능
 
-설명.
+- Recbole
+
+<img src = images/RecBole.png, width=500>
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- 순위 -->
 ## 순위
 
-스코어입니다.
+- Public 4/12
+
+<img width="600" alt="Pasted Graphic 1" src="https://github.com/boostcampaitech5/level2_movierecommendation-recsys-01/assets/69078499/eee01baf-2b5f-47c9-afcb-0323abfa3d9e">
+
+- Private 7/12
+
+<img width="600" alt="Pasted Graphic 2" src="https://github.com/boostcampaitech5/level2_movierecommendation-recsys-01/assets/69078499/6d7e9bcb-3fee-4abe-9e54-361631b2170d">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
