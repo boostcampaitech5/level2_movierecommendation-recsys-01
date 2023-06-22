@@ -51,7 +51,7 @@
 <!-- 프로젝트 개요 -->
 ## 프로젝트 개요
 
-위의 그림과 같이 사용자의 영화 시청 이력 데이터를 활용하여 다음에 시청할 영화 및 좋아할 영화를 예측하는 것이 프로젝트의 목표입니다. 이 대회에서는 MovieLens 데이터를 전처리하여 사용되며, implicit feedback만 존재합니다. 시간순으로 정렬된 시퀀스에서 일부 아이템이 누락된 상황을 가정합니다. 이를 통해 실제 상황과 유사한 예측을 수행하는 것이 목표입니다.
+위의 그림과 같이 사용자의 영화 시청 이력 데이터를 활용하여 다음에 시청할 영화 및 좋아할 영화를 예측하는 것이 프로젝트의 목표입니다. 이 대회에서는 MovieLens 데이터를 전처리하여 사용되며, **implicit feedback**만 존재합니다. **시간순으로 정렬된 시퀀스**에서 **일부 아이템이 누락**된 상황을 가정합니다. 이를 통해 **실제 상황**과 유사한 예측을 수행하는 것이 목표입니다.
 
 <br>
 
@@ -123,9 +123,9 @@
 
 - 최종 제출 결과
 
-<img src = images/Public-Score.png>
+<img src = images/PublicScore.png>
 
-<img src = images/Private-Score.png>
+<img src = images/PrivateScore.png>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
