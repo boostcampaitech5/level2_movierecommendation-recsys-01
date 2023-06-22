@@ -1,8 +1,6 @@
 <a name="readme-top"></a>
 
-<br />
 <div align="center">  
-<br>
 
 ![header](https://capsule-render.vercel.app/api?type=rounded&color=0:81ed89,100:06c007&text=Style%20Bible&height=150&fontSize=80&fontColor=d3ffd8)
 
@@ -32,7 +30,6 @@
 
 <h1> Movie Recommendation</h1>
 <img src = ./images/main_image.png , width =500, height=250>
-<br><br>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -77,15 +74,12 @@
 
 ## 로드맵
 
-<br>
 <img src = images/Roadmap.png>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <br>
 
 ## 프로젝트 구조
-
-프로젝트 구조입니다.
 
     📦MovieRec
     ┣ 📂data
@@ -100,7 +94,7 @@
     ┣ 📜README.md
     ┗ 📜RuleBook.md
 
-<br>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 모델 사용 방법
 
@@ -119,14 +113,19 @@
 
 - [Ensemble](/src/Ensemble/README.md)
 
-
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 모델별 성능
 
-- Recbole
+- RecBole
 
-<img src = images/RecBole.png, width=500>
+<img src = images/RecBole.png>
 
+- 최종 제출 결과
+
+<img src = images/Public-Score.png>
+
+<img src = images/Private-Score.png>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -146,6 +145,7 @@
 
 
 ## Wrap-up Report
+
 [Wrap-up Report]()
-<br>
-<br>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
