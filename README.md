@@ -1,15 +1,8 @@
-<br>
-<h1> Movie Recommendation</h1>
-
-<!-- PROJECT LOGO -->
 <br />
-<div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/main_image.jpg" alt="Logo" width="500" height="300">
-  </a>
-  
-  <br>
-  <h2 align="center"><strong>Style Bible </strong></h2>
+<div align="center">  
+<br>
+
+![header](https://capsule-render.vercel.app/api?type=rounded&color=0:81ed89,100:06c007&text=Style%20Bible&height=150&fontSize=80&fontColor=d3ffd8)
 
 ---
   <br>
@@ -35,54 +28,59 @@
   
 <br><br>
 
+<h1> Movie Recommendation</h1>
+<img src = ./images/main_image.png , width =500, height=250>
+<br><br>
 </div>
 
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#프로젝트 개요 및 설명">프로젝트 개요 및 설명</a>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#프로젝트-개요">프로젝트 개요</a></li>
+    <li><a href="#협업-규칙">협업 규칙</a></li>
+    <li><a href="#프로젝트-구조">프로젝트 구조</a></li>
+    <li><a href="#로드맵">로드맵</a></li>
+    <li><a href="#모델-사용-방법">모델 사용 방법</a></li>
+    <li><a href="#모델별-성능">모델별 성능</a></li>
+    <li><a href="#순위">순위</a></li>
+    <li><a href="#Wrap-up-Report">Wrap up Report</a></li>
   </ol>
 </details>
+<br>
 
+<!-- 프로젝트 개요 -->
+## 프로젝트 개요
+
+위의 그림과 같이 사용자의 영화 시청 이력 데이터를 활용하여 다음에 시청할 영화 및 좋아할 영화를 예측하는 것이 프로젝트의 목표입니다. 이 대회에서는 MovieLens 데이터를 전처리하여 사용되며, implicit feedback만 존재합니다. 시간순으로 정렬된 시퀀스에서 일부 아이템이 누락된 상황을 가정합니다. 이를 통해 실제 상황과 유사한 예측을 수행하는 것이 목표입니다.
 
 <br>
 
-<!-- 프로젝트 개요 및 설명 -->
-## 프로젝트 개요 및 설명
-
-프로젝트 개요 및 설명입니다.
+- **input:** user의 implicit 데이터, item(movie)의 meta데이터
+- **output:** user에게 추천하는 item을 user, item이 ','로 구분된 파일(csv) 로 제출합니다.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-<!-- ROADMAP -->
-## Roadmap
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- 협업 규칙 -->
 ## 협업 규칙
 
+[협업 규칙](/RuleBook.md)
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<br>
 
-## Project Structure
+
+## 로드맵
+
+<br>
+<img src = images/Roadmap.png>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<br>
+
+## 프로젝트 구조
 
 프로젝트 구조입니다.
 
@@ -99,58 +97,32 @@
     ┣ 📜README.md
     ┗ 📜RuleBook.md
 
-## 모델별 사용방법 및 선정 이유
+<br>
+
+## 모델 사용 방법
 
 각 모델별 README.md 파일을 링크합니다.
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### EDA 및 그래프
+
+## 모델별 성능
 
 설명.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- Score -->
-## Score
+<!-- 순위 -->
+## 순위
 
 스코어입니다.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+## Wrap-up Report
+[Wrap-up Report]()
+<br>
+<br>

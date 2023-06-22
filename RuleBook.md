@@ -1,6 +1,3 @@
-![header](https://capsule-render.vercel.app/api?type=rounded&color=0:81ed89,100:06c007&text=Style%20Bible&height=150&fontSize=80&fontColor=d3ffd8)
-
-
 # GitHub 협업 규칙
 RecSys 1조 Style Bible의 GitHub 협업 규칙입니다.
 <br>
