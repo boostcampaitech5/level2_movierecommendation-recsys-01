@@ -158,7 +158,7 @@ def sequence_train(model_name='gru4recf'):
     
     config['show_progress'] = False 
     config['device'] = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    config['epochs'] = 30
+    config['epochs'] = 100 # 30
     
     init_seed(config['seed'], config['reproducibility'])
     init_logger(config)
