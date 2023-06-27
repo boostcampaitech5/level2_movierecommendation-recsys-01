@@ -146,6 +146,6 @@
 
 ## Wrap-up Report
 
-[Wrap-up Report]()
+[Wrap-up Report](images/WrapUpReport.pdf)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
