@@ -1,160 +1,151 @@
+<a name="readme-top"></a>
+
+<div align="center">  
+
 ![header](https://capsule-render.vercel.app/api?type=rounded&color=0:81ed89,100:06c007&text=Style%20Bible&height=150&fontSize=80&fontColor=d3ffd8)
 
-<br>
-:sunglasses:곽동호 T5013 :sunglasses:권수훈 T5017 :sunglasses:박상우 T5081
-<br><br>
-:sunglasses:이민호 T5140 :sunglasses:이한정 T5166 :sunglasses:이준원 T5237
-<br><br>
+---
+  <br>
+  :sunglasses:곽동호 T5013 :moneybag:권수훈 T5017 :smile_cat:박상우 T5081
+  <br><br>
+  :smile:이민호 T5140 :stuck_out_tongue_winking_eye:이한정 T5166 :relaxed:이준원 T5237
+  <br><br><br>
+  
+  <p align="center"><strong>Skills</strong>
+    <br />
 
-# GitHub 협업 규칙
-RecSys 1조 Style Bible의 GitHub 협업 규칙입니다.
-<br>
-
-## 0. pre-commit 설치 방법
-
-```bash
-pip install pre-commit
-pre-commit install
-```
-
-## 1. 커밋 컨벤션
-커밋 메시지 구조는 header, body, footer 세 가지 파트로 나누고, 각 파트는 빈 줄을 두어 구분한다.
-<br>
-
-### Header
-머리말은 아래와 같은 구조로 이루어져 있습니다.
-- tag: subject
-- tag는 소문자로 시작
-- subject는 소문자로 시작
-<br>
-
-#### Tag
-- 태그: 커밋의 종류를 나타냅니다. 주요 태그 아래와 같습니다:
-
- - `feat`: 새로운 기능 추가
- - `fix`: 버그 수정
- - `docs`: 문서 관련 변경
- - `setting`: 프로젝트 초기 설정
- - `style`: 코드 스타일 변경 (공백, 포맷 등)
- - `refactor`: 코드 리팩토링
- - `test`: 테스트 관련 변경
- - `chore`: 그 외 자잘한 변경
- <br>
-
-#### Subject
-제목은 다음의 규칙을 지킨다.
-
-- 최대 50글자가 넘지 않도록 하고 마침표 및 특수기호는 사용하지 않는다.
-- 명령문으로 작성한다.
-<br>
-
-### Body
-본문은 다음의 규칙을 지킨다.
-
-- 본문은 한 줄당 72자 내로 작성한다.
-- 본문 내용은 양에 구애받지 않고 최대한 상세히 작성한다.
-- 본문 내용은 어떻게 변경했는지보다 무엇을 변경했는지 또는 왜 변경했는지를 설명한다.
-<br>
-
-### Footer
-꼬리말은 다음의 규칙을 지킨다.
-
-- 꼬리말은 optional이고 이슈 트래커 ID를 작성한다.
-- 꼬리말은 " #이슈 번호" 형식으로 사용한다.
-- 여러 개의 이슈 번호를 적을 때는 쉼표(,)로 구분한다.
-<br>
-
-### 커밋 메시지 예시
->setting: add issue template
->
->To use when implementing new features.
->
-> #1
 ---
 <br>
 
-## 2. ISSUE / PR
-ISSUE / PR은 다음의 규칙을 지킨다.
-- ISSUE 기반으로 커밋을 트래킹한다.
-- PR은 최소 3명 이상의 확인을 받고 승인해야 한다.
-- ISSUE / PR은 템플릿을 만들어서 사용하고 제목 앞에 [태그]를 붙여서 작성해야 한다.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white" alt="Python badge">
+  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=PyTorch&logoColor=white" alt="PyTorch badge">
+  <img src="https://img.shields.io/badge/pandas-150458?style=flat-square&logo=pandas&logoColor=white" alt="pandas badge">
+  <img src="https://img.shields.io/badge/numpy-013243?style=flat-square&logo=numpy&logoColor=white" alt="numpy badge">
+  <img src="https://img.shields.io/badge/scikit learn-F7931E?style=flat-square&logo=scikitlearn&logoColor=white" alt="scikitlearn badge">
+    <img src="https://img.shields.io/badge/wandb-FFBE00?style=flat-square&logo=weightsandbiases&logoColor=white" alt="weightsandbiases badge">
+</p>
+  
+<br><br>
+
+<h1> Movie Recommendation</h1>
+<img src = ./images/main_image.png , width =500, height=250>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#프로젝트-개요">프로젝트 개요</a></li>
+    <li><a href="#협업-규칙">협업 규칙</a></li>
+    <li><a href="#프로젝트-구조">프로젝트 구조</a></li>
+    <li><a href="#로드맵">로드맵</a></li>
+    <li><a href="#모델-사용-방법">모델 사용 방법</a></li>
+    <li><a href="#모델별-성능">모델별 성능</a></li>
+    <li><a href="#순위">순위</a></li>
+    <li><a href="#Wrap-up-Report">Wrap up Report</a></li>
+  </ol>
+</details>
 <br>
 
-### ISSUE/PR 제목 태그
+<!-- 프로젝트 개요 -->
+## 프로젝트 개요
 
- - [Feat] 새로운 기능 추가
- - [Fix] 버그 수정
- - [Docs] 문서 관련 변경
- - [Setting] 프로젝트 초기 설정
- - [Style] 코드 스타일 변경 (공백, 포맷 등)
- - [Refactor] 코드 리팩토링
- - [Test] 테스트 관련 변경
- - [Chore] 그 외 자잘한 변경
-<br>
-
-### ISSUE/PR 제목 예시
-> [Feat] Saint+ 모델 구현
----
-<br>
-
-## 3. 대회를 위한 Git Flow
-
-### 모델링 가이드
-
-- 새로운 모델을 만들 때, ISSUE를 생성한다.
- >[FEAT] Saint+ 모델 구현
-- master에서 브랜치를 base: 모델명으로 생성한다.
- >base: saint+
-- base: 모델명 브랜치에서 사용자명: 모델명으로 브랜치를 생성해서 작업한다.
- >junwon: saint+
-- 정상적으로 동작하는 기능이나 공유하고 싶은 자료가 있을 때, base: 모델명 브랜치에 사용자의 branch를 merge 한다.
-
-- 모델이 완성되었을 때, master에 base: 모델명을 merge 한다.
-<br>
-
-## 4. 프로젝트 폴더 구조 
-<br>
-<img width="400" alt="image" src="https://github.com/boostcampaitech5/level2_movierecommendation-recsys-01/assets/69078499/ec79e214-73d7-4623-8ea5-edeb0949aa3b">
-<br>
-
-- README.md
-
-    README 파일은 프로젝트의 개요를 제공합니다.
-    <br>
-    목적, 설치 지침, 사용 가이드라인 및 기타 관련 정보가 포함됩니다.
-<br>
-
-- data
-
-    csv 파일이나 데이터를 저장하여 사용하는 폴더입니다.
-    <br>
-    파일은 빈 폴더로 존재해야 하며 데이터 위치를 지정해서 사용하기 위해 빈 폴더를 생성하였습니다.
-<br>
-
-- notebooks
-
-    EDA, 시각화, 데이터 전처리 등 공유하고자 하는 주피터 노트북을 저장하는 곳입니다.
-    <br>
-    양식은 제목-사용자명.ipynb으로 한다.
-    <br>
-    >예시: EDA-junwon.ipynb
-<br>
-
-- src
-
-    해당 위치에 모델별로 폴더를 생성하여 작업합니다.
-<br>
-
-### 파이토치 템플릿
-파이토치 템플릿은 아래 링크를 참고하여 작성한다.
-<br>
-
-- 참조 링크
-<br>
-
->[기본 템플릿](https://github.com/victoresque/pytorch-template)
-<br>
-
->[간단한 버전](https://smha-61749.medium.com/pytorch-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EB%94%A5%EB%9F%AC%EB%8B%9D-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EA%B3%84%ED%95%98%EA%B3%A0-%ED%85%9C%ED%94%8C%EB%A6%BF-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0-ccf222552e63)
+위의 그림과 같이 사용자의 영화 시청 이력 데이터를 활용하여 다음에 시청할 영화 및 좋아할 영화를 예측하는 것이 프로젝트의 목표입니다. 이 대회에서는 MovieLens 데이터를 전처리하여 사용되며, **implicit feedback**만 존재합니다. **시간순으로 정렬된 시퀀스**에서 **일부 아이템이 누락**된 상황을 가정합니다. 이를 통해 **실제 상황**과 유사한 예측을 수행하는 것이 목표입니다.
 
 <br>
+
+- **input:** user의 implicit 데이터, item(movie)의 meta데이터
+- **output:** user에게 추천하는 item을 user, item이 ','로 구분된 파일(csv) 로 제출합니다.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- 협업 규칙 -->
+## 협업 규칙
+<br>
+
+- [협업 규칙](/RuleBook.md)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<br>
+
+
+## 로드맵
+
+<img src = images/Roadmap.png>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<br>
+
+## 프로젝트 구조
+
+    📦MovieRec
+    ┣ 📂data
+    ┣ 📂images
+    ┣ 📂notebooks
+    ┣ 📂src
+    ┃ ┣ 📂ALS
+    ┃ ┣ 📂EASE
+    ┃ ┣ 📂Ensemble
+    ┃ ┣ 📂Recbole
+    ┃ ┗ 📂Sequential
+    ┣ 📜README.md
+    ┗ 📜RuleBook.md
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 모델 사용 방법
+
+각 모델별 사용 방법입니다.
+
+- [ALS](/src/ALS/README.md)
+
+- [EASE](/src/EASE/README.md)
+
+- [Recbole](/src/EASE/Recbole.md)
+
+- [Sequential](/src/Sequential/README.md)
+
+
+## 앙상블 방법
+
+- [Ensemble](/src/Ensemble/README.md)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 모델별 성능
+
+- RecBole
+
+<img width =400px src = images/RecBole.png>
+
+- 최종 제출 결과
+
+<img width = 400px src = images/PublicScore.png>
+
+<img width = 400px src = images/PrivateScore.png>
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- 순위 -->
+## 순위
+
+- Public 4/12
+
+<img width="600" alt="Pasted Graphic 1" src="https://github.com/boostcampaitech5/level2_movierecommendation-recsys-01/assets/69078499/eee01baf-2b5f-47c9-afcb-0323abfa3d9e">
+
+- Private 7/12
+
+<img width="600" alt="Pasted Graphic 2" src="https://github.com/boostcampaitech5/level2_movierecommendation-recsys-01/assets/69078499/6d7e9bcb-3fee-4abe-9e54-361631b2170d">
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+## Wrap-up Report
+
+[Wrap-up Report](images/WrapUpReport.pdf)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
