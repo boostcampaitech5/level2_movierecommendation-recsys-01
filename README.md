@@ -119,13 +119,13 @@
 
 - RecBole
 
-<img src = images/RecBole.png>
+<img width =400px src = images/RecBole.png>
 
 - 최종 제출 결과
 
-<img src = images/PublicScore.png>
+<img width = 400px src = images/PublicScore.png>
 
-<img src = images/PrivateScore.png>
+<img width = 400px src = images/PrivateScore.png>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
