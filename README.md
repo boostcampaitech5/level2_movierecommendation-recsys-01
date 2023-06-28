@@ -104,7 +104,7 @@
 
 - [EASE](/src/EASE/README.md)
 
-- [Recbole](/src/EASE/Recbole.md)
+- [Recbole](/src/Recbole/README.md)
 
 - [Sequential](/src/Sequential/README.md)
 
