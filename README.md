@@ -135,11 +135,11 @@
 
 - Public 4/12
 
-<img width="600" alt="Pasted Graphic 1" src="https://github.com/boostcampaitech5/level2_movierecommendation-recsys-01/assets/69078499/eee01baf-2b5f-47c9-afcb-0323abfa3d9e">
+<img width= 800px src = images/PublicRanking.png>
 
 - Private 7/12
 
-<img width="600" alt="Pasted Graphic 2" src="https://github.com/boostcampaitech5/level2_movierecommendation-recsys-01/assets/69078499/6d7e9bcb-3fee-4abe-9e54-361631b2170d">
+<img width= 800px src = images/PrivateRanking.png>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
